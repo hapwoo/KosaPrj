@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="members">
+
+    <select id="login" parameterType="members" resultType="members">
+        select * from MEMBERS where m_id = #{mId} and m_password = #{mPassword}
+    </select>
+
+    <insert id="regist" parameterType="members">
+        <selectKey keyProperty="userid" resultType="int" order="BEFORE">
+            select members_seq.nextval from dual
+        </selectKey>
+        insert into MEMBERS (M_ID, M_PASSWORD, M_AGE, M_SEX, M_GENRE, M_ACTOR, USERID)
+        values( #{mId}, #{mPassword}, #{mAge}, #{mSex}, #{mGenre}, #{mActor},#{userid})
+    </insert>
+
+    <select id="detail" parameterType="string" resultType="members">
+        select * from MEMBERS where M_ID =#{id}
+    </select>
+
+    <select id="detailUser" parameterType="int" resultType="members">
+        select * from MEMBERS where USERID =#{userid}
+    </select>
+
+
+    <update id="update" parameterType="members">
+        update MEMBERS set M_PASSWORD = #{mPassword}, M_AGE = #{mAge}, M_SEX= #{mSex}, M_GENRE = #{mGenre}, M_ACTOR = #{mActor}
+        where USERID =#{userid}
+    </update>
+
+</mapper>

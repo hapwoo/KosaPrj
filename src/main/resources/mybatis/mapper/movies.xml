@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="movies">
+
+    <resultMap type="movies" id="tableResultMap">
+        <id property="movieid" column="MOVIEID" />
+        <id property="title" column="TITLE" />
+        <id property="genres" column="GENRES" />
+        <association property="rating"  javaType="ratings" >
+            <result property="rating" column="RATING" />
+            <result property="comments" column="COMMENTS" />
+        </association>
+    </resultMap>
+
+    <select id="listAll" parameterType="string" resultMap="tableResultMap">
+        select m.MOVIEID as MOVIEID, m.TITLE as TITLE, m.GENRES as GENRES, round(b.rat,1) as RATING
+        from MOVIES m
+        join (select c.MOVIEID, sum(c.RATING)/count(c.RATING) as rat from RATINGS c group by MOVIEID) b on m.MOVIEID = b.MOVIEID
+    </select>
+    <select id="contentsList" parameterType="int" resultMap="tableResultMap">
+        select d.MOVIEID as MOVIEID, m.TITLE as TITLE, RATING
+        from MOVIES m
+             join (select ranking, ct.movieid as MOVIEID, round(b.rat,1) as RATING
+                   from contents_top_ten ct
+                            join (select c.MOVIEID, sum(c.RATING)/count(c.RATING) as rat
+                                  from RATINGS c
+                                  group by MOVIEID) b
+                             on ct.MOVIEID = b.MOVIEID
+                   where ct.userid=#{id}
+                   ORDER BY ct.ranking) d
+              on d.movieid = m.movieid
+    </select>
+    <select id="userList" parameterType="int" resultMap="tableResultMap">
+        select d.MOVIEID as MOVIEID, m.TITLE as TITLE, RATING
+        from MOVIES m
+                 join (select ranking, ct.movieid as MOVIEID, round(b.rat,1) as RATING
+                       from user_top_ten ct
+                                join (select c.MOVIEID, sum(c.RATING)/count(c.RATING) as rat
+                                      from RATINGS c
+                                      group by MOVIEID) b
+                                     on ct.MOVIEID = b.MOVIEID
+                       where ct.userid=#{id}
+                       ORDER BY ct.ranking) d
+                      on d.movieid = m.movieid
+    </select>
+    <select id="ratingList" parameterType="int" resultMap="tableResultMap">
+--         SELECT wrt.title as TITLE, wrt.MOVIEID as MOVIEID,  round(b.rat,1) as RATING
+--         FROM (select mo.title, mo.MOVIEID, ra.wr, ROW_NUMBER() OVER (order by ra.wr DESC) as num
+--         from movies mo
+--         join (select ((count(movieid)/(count(movieid)+(SELECT PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY mm)
+--         FROM (select count(movieid)as mm FROM ratings group by movieid)))*avg(rating)) +
+--         ((SELECT PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY mm)
+--         FROM (select count(movieid)as mm, movieid FROM ratings group by movieid))/((SELECT PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY mm)FROM (select count(movieid)as mm,
+--         movieid FROM ratings group by movieid))+ count(movieid)))*
+--         (select avg(r) from (select FLOOR(avg(rating)) as r FROM ratings group by movieid))) as wr, movieid
+--         from ratings
+--         group by movieid) ra
+--         on ra.movieid = mo.movieid) wrt
+--         join (select c.MOVIEID, sum(c.RATING)/count(c.RATING) as rat from RATINGS c group by MOVIEID) b on wrt.MOVIEID = b.MOVIEID
+--         WHERE num &lt;=10
+        select d.MOVIEID as MOVIEID, m.TITLE as TITLE, RATING
+        from MOVIES m
+         join (select ranking, ct.movieid as MOVIEID, round(b.rat,1) as RATING
+               from imdb_top_ten ct
+                        join (select c.MOVIEID, sum(c.RATING)/count(c.RATING) as rat
+                              from RATINGS c
+                              group by MOVIEID) b
+                         on ct.MOVIEID = b.MOVIEID
+               where ct.userid=#{id}
+               ORDER BY ct.ranking) d
+          on d.movieid = m.movieid
+    </select>
+
+    <select id="listgenre" parameterType="string" resultMap="tableResultMap">
+        select m.MOVIEID as MOVIEID, m.TITLE as TITLE, m.GENRES as GENRES, round(b.rat,1) as RATING
+        from MOVIES m
+        join (select c.MOVIEID, sum(c.RATING)/count(c.RATING) as rat from RATINGS c group by MOVIEID) b on m.MOVIEID = b.MOVIEID
+        where m.GENRES LIKE '%'||#{genre}||'%'
+    </select>
+
+    <select id="listName" parameterType="string" resultType="movies">
+        select m.MOVIEID as MOVIEID, m.TITLE as TITLE, m.GENRES as GENRES
+        from MOVIES m
+        where m.TITLE LIKE '%'||#{name}||'%'
+    </select>
+
+    <select id="movieDetail" parameterType="int" resultMap="tableResultMap">
+        select m.MOVIEID as MOVIEID, m.TITLE as TITLE, m.GENRES as GENRES, round(b.rat,1) as RATING
+        from MOVIES m
+        join (select c.MOVIEID, sum(c.RATING)/count(c.RATING) as rat from RATINGS c group by MOVIEID) b on m.MOVIEID = b.MOVIEID
+        where m.MOVIEID = #{movieId}
+    </select>
+
+    <select id="detailComment" parameterType="int" resultType="Ratings">
+        select*from RATINGS where MOVIEID = #{movieId}
+    </select>
+
+    <select id="myComment" parameterType="map" resultType="Ratings">
+        select*from RATINGS where MOVIEID = ${movieId} and USERID = ${userid}
+    </select>
+
+    <insert id="insertComment" parameterType="Ratings">
+        insert into RATINGS (USERID, MOVIEID, RATING, TIMESTAMP, COMMENTS)
+        values(#{userId},#{movieId},#{rating},#{timestamp},#{comments})
+    </insert>
+
+    <update id="updateComment" parameterType="Ratings">
+        update RATINGS set RATING=#{rating}, TIMESTAMP=#{timestamp}, COMMENTS=#{comments} where USERID = #{userId} and MOVIEID =#{movieId}
+    </update>
+
+    <select id="getTotalRows" resultType="int">
+        select count(*) from MOVIES
+    </select>
+
+    <select id="listBypage" parameterType="pager" resultMap="tableResultMap">
+        select MOVIEID, TITLE, GENRES, RATING
+        from(
+            select ROWNUM AS eno, MOVIEID, TITLE, GENRES, RATING
+            from (select m.MOVIEID as MOVIEID, m.TITLE as TITLE, m.GENRES as GENRES, round(b.rat,1) as RATING
+                    from MOVIES m
+                    join (select c.MOVIEID, sum(c.RATING)/count(c.RATING) as rat from RATINGS c group by MOVIEID) b on m.MOVIEID = b.MOVIEID)
+            where ROWNUM &lt;= #{endRowNo})
+        where eno &gt;= #{startRowNo}
+    </select>
+
+    <select id="listpageGenre" parameterType="map" resultMap="tableResultMap">
+        select MOVIEID, TITLE, GENRES, RATING
+        from(
+                select ROWNUM AS eno, MOVIEID, TITLE, GENRES, RATING
+                from (select m.MOVIEID as MOVIEID, m.TITLE as TITLE, m.GENRES as GENRES, round(b.rat,1) as RATING
+                      from MOVIES m
+                               join (select c.MOVIEID, sum(c.RATING)/count(c.RATING) as rat from RATINGS c group by MOVIEID) b on m.MOVIEID = b.MOVIEID
+                      where m.GENRES LIKE '%'||#{genre}||'%')
+                where ROWNUM &lt;= #{pager.endRowNo})
+        where eno &gt;= #{pager.startRowNo}
+    </select>
+
+    <select id="detailCommentPage" parameterType="map" resultType="Ratings">
+        select *
+        from(select ROWNUM AS eno, USERID, MOVIEID, RATING, COMMENTS
+            from (select USERID, MOVIEID, RATING, COMMENTS
+                    from RATINGS
+                    where MOVIEID = #{movieId})
+            where  ROWNUM &lt;= #{pager.endRowNo})
+        where eno &gt;= #{pager.startRowNo}
+    </select>
+
+
+</mapper>
