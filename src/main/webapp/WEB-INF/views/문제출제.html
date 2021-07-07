@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+<style>
+
+    @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+    * {
+        font-family: 'Noto Sans KR', sans-serif;
+    }
+
+    #menu {
+        border-right: 1px solid #e8e8e8;
+        height: 100%;
+        width: 15%;
+        display: inline-block;
+        position: fixed;
+    }
+
+    #menuWrapper {
+        width: 100%;
+    }
+
+    .menuTitle {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .menuContain {
+        margin-left: 5%;
+        padding-top: 20px;
+        color: white;
+    }
+
+    li {
+        list-style: none;
+        height: 40px;
+    }
+
+
+    li > a {
+        color: black;
+        text-decoration: none;
+    }
+
+    li > a:hover {
+        color: red;
+    }
+
+    .menuLi {
+        font-size: 18px;
+    }
+
+    #card_title {
+        font-size: 30px;
+        font-family: "Noto Sans KR", sans-serif;
+        font-width: bold;
+    }
+
+
+</style>
+</head>
+<body>
+<div class="w3-top">
+    <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
+        <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
+        <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="News"><i class="fa fa-home w3-margin-right"></i></a>
+
+        <a href="#" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white">
+            <i class="fa fa-user"></i>
+        </a>
+        <a href="#" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white">
+            </i><i class="fa fa-envelope"></i>
+        </a>
+        <a href="#" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white">
+            <i class="fa fa-globe"></i>
+        </a>
+        <a href="#" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white">
+            <i class="fa fa-bell"></i>
+        </a>
+    </div>
+</div>
+
+
+<br/><br/>
+<div id="all" style="height: 100%; width: 100%; display: flex;">
+    <div id="menu" style="background-color: #FAFAFA;">
+        <div id="menuWrapper">
+            <!-- c:if 회원 == 선생 -->
+            <div class="menuTitle" style="background-color: #a9b6ba; width: 100%; height: 60px;">
+                <div class="menuContain">
+                문제
+                </div>
+            </div><br/>
+            <ul class="menuLi">
+                <li><a href="">문제출제</a></li>
+                <li><a href="">문제탐색</a></li>
+                <li><a href="">내문제관리</a></li>
+            </ul>
+
+            <br/><br/>
+
+            <div class="menuTitle" style="background-color: #a9b6ba; width: 100%; height: 60px;">
+                <div class="menuContain">
+                    시험
+                </div>
+            </div><br/>
+            <ul class="menuLi">
+                <li><a href="">시험출제</a></li>
+                <li><a href="">시험관리</a></li>
+            </ul>
+
+            <br/><br/>
+
+            <div class="menuTitle" style="background-color: #a9b6ba; width: 100%; height: 60px;">
+                <div class="menuContain">
+                    채점
+                </div>
+            </div><br/>
+            <ul class="menuLi">
+                <li><a href="">시험채점</a></li>
+            </ul>
+
+            <br/><br/>
+
+            <div class="menuTitle" style="background-color: #a9b6ba; width: 100%; height: 60px;">
+                <div class="menuContain">
+                   우리반
+                </div>
+            </div><br/>
+            <ul class="menuLi">
+                <li><a href="">우리반 전체 통계</a></li>
+                <li><a href="">학생별 최근 시험 조회</a></li>
+                <li><a href="">개별 학생 히스토리 조회</a></li>
+            </ul>
+
+            <br/><br/>
+            <!-- c:if/-->
+
+            <!-- c:if 회원 == 학생 -->
+            <div class="menuTitle" style="background-color: #a9b6ba; width: 100%; height: 60px;">
+                <div class="menuContain">
+                    시험
+                </div>
+            </div><br/>
+            <ul class="menuLi">
+                <li><a href="">시험 보기</a></li>
+                <li><a href="">시험 결과</a></li>
+            </ul>
+
+            <br/><br/>
+
+            <div class="menuTitle" style="background-color: #a9b6ba; width: 100%; height: 60px;">
+                <div class="menuContain">
+                    공지
+                </div>
+            </div><br/>
+            <ul class="menuLi">
+                <li><a href="">내 평가 보기</a></li>
+                <li><a href="">이번 학기 평가 보기</a></li>
+            </ul>
+            <!-- c:if/ -->
+
+        </div>
+
+    </div>
+
+
+    <div style="height: 100%; width: 20%; display: inline-block"></div>
+    <div id="right" style="height: 100%; width: 100%; display: inline-block">
+        <div class="w3-col m7" style="width:98%"><br/><br/>
+            <div class="w3-row-padding">
+                <div class="w3-col m12">
+                    <div class="w3-card w3-round w3-white">
+                        <div class="w3-container w3-padding"">
+                            <br/><br/>
+                            <span class="w3-right w3-opacity">남은 시간 같은거 등, 필요없으면 삭제</span>
+                            <h4>문제 출제하기</h4><br/><br/>
+
+                            <div style="text-align: right">
+                                <select class="w3-border w3-padding" aria-label=".form-select-sm example" style="width:10%; height:40px; font-size: 10px; display:inline-block;">
+                                    <option selected>학년</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="3">4</option>
+                                    <option value="3">5</option>
+                                    <option value="3">6</option>
+                                </select>
+
+                                <select class="w3-border w3-padding" aria-label=".form-select-sm example" style="width:10%; height:40px; font-size: 10px; display:inline-block; margin: 0% 1%;">
+                                    <option selected>과목</option>
+                                    <option value="math">수학</option>
+                                    <option value="language">국어</option>
+                                    <option value="english">영어</option>
+                                </select>
+
+                                <select class="w3-border w3-padding" aria-label=".form-select-sm example" style="width:20%; height:40px; font-size: 10px; display:inline-block;">
+                                    <option selected>성취 기준</option>
+                                    <option value="">기준1</option>
+                                </select>
+                            </div> <br/>
+                                <input type="text" class="w3-border w3-padding" placeholder="문제 제목을 입력하세요." style="width: 100%; height: 50px;"/> <br/><br/>
+                                <textarea type="text" class="w3-border w3-padding" placeholder="문제 내용을 입력하세요." style="width: 100%; height: 300px;"></textarea> <br/><br/>
+                                <textarea type="text" class="w3-border w3-padding" placeholder="모범답안을 입력하세요." style="width: 100%; height: 300px;"></textarea> <br/><br/><br/>
+                            <button type="button" class="w3-button w3-theme"><i class="fa fa-pencil"></i>   문제 등록하기</button> <br/><br/><br/>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
+                <span class="w3-right w3-opacity">남은 시간 같은거 등, 필요없으면 삭제</span>
+                <div style="font-family: 'Noto Sans KR', sans-serif; font-weight: bold;">해당 래퍼의 제목</div><br>
+                <hr class="w3-clear">
+                <p>대충 뭐 하고 싶은말</p>
+
+                <div class="w3-row-padding" style="margin:0 -16px">
+                </div>
+                <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i> 버튼이 필요한 경우 1</button>
+                <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i> 버튼이 필요한 경우 2</button>
+            </div>
+
+            <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
+                <span class="w3-right w3-opacity">남은 시간 같은거 등, 필요없으면 삭제</span>
+                <h4>해당 래퍼의 제목</h4><br>
+                <hr class="w3-clear">
+                <p>대충 뭐 하고 싶은말</p>
+
+                <div class="w3-row-padding" style="margin:0 -16px">
+                </div>
+                <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i> 버튼이 필요한 경우 1</button>
+                <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i> 버튼이 필요한 경우 2</button>
+            </div>
+            <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
+                <span class="w3-right w3-opacity">남은 시간 같은거 등, 필요없으면 삭제</span>
+                <h4>해당 래퍼의 제목</h4><br>
+                <hr class="w3-clear">
+                <p>대충 뭐 하고 싶은말</p>
+
+                <div class="w3-row-padding" style="margin:0 -16px">
+                </div>
+                <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i> 버튼이 필요한 경우 1</button>
+                <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i> 버튼이 필요한 경우 2</button>
+            </div>
+
+            <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
+                <span class="w3-right w3-opacity">남은 시간 같은거 등, 필요없으면 삭제</span>
+                <h4>해당 래퍼의 제목</h4><br>
+                <hr class="w3-clear">
+                <p>대충 뭐 하고 싶은말</p>
+
+                <div class="w3-row-padding" style="margin:0 -16px">
+                </div>
+                <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i> 버튼이 필요한 경우 1</button>
+                <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i> 버튼이 필요한 경우 2</button>
+            </div>
+
+            <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
+                <span class="w3-right w3-opacity">남은 시간 같은거 등, 필요없으면 삭제</span>
+                <h4>해당 래퍼의 제목</h4><br>
+                <hr class="w3-clear">
+                <p>대충 뭐 하고 싶은말</p>
+
+                <div class="w3-row-padding" style="margin:0 -16px">
+                </div>
+                <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i> 버튼이 필요한 경우 1</button>
+                <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i> 버튼이 필요한 경우 2</button>
+            </div>
+
+
+            <!-- End Middle Column -->
+        </div>
+    </div>
+
+</div>
+
+</div>
+
+
+</body>
+
+
+</html>
